@@ -1,6 +1,17 @@
-FROM openjdk:17-alpine
-LABEL authors="Cuadros García"
+FROM node:18
+
+RUN mkdir -p /app
+
 WORKDIR /app
-COPY target/AS221S5_T03_be-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+COPY package*.json /app
+
+RUN npm install
+
+COPY . /app
+
+RUN npm run build --prod
+
+EXPOSE 4200
+
+ENTRYPOINT [ "npm", "start" ]
